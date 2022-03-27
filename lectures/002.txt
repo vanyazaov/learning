@@ -100,3 +100,49 @@ docker-compose up -d
 реальном времени.
 
 ---- сохранение в git ---- Работа с Docker Compose
+---Установка PHP-FPM
+
+Для того, чтобы мы могли работать с PHP-файлами необходимо установить php-fpm и настроить сервер NGINX на проксирование
+запросов.
+Создадим отдельную папку docker/php-fpm и поместим там Dockerfile.
+В нем мы основываемся на образе php:8.1-fpm-alpine
+FROM php:8.1-fpm-alpine
+Для удобства переименовываем файл php.ini-development в php.ini
+RUN mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
+и устанавливаем рабочую директорию
+WORKDIR /app
+
+Теперь нам необходимо описать этот сервис в docker-compose:
+php-fpm:
+    build:
+        context: docker/php-fpm
+    volumes:
+        -   ./:/app
+
+Теперь необходимо настроить NGINX, чтобы динамические запросы автоматически проксировались на наш php-fpm:
+Отлавливаем все запросы, которые приходят к нам на сервер и переадрисовываем их на файл index.php
+    location / {
+      try_files $uri /index.php?$args;
+    }
+Если запускется файл php, то запрос передаем созданному сервису php-fpm:9000
+    location ~ \.php$ {
+      fastcgi_pass php-fpm:9000;
+      fastcgi_index index.php;
+      include fastcgi_params;
+      fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+      fastcgi_param SCRIPT_NAME $fastcgi_script_name;
+      fastcgi_param PATH_INFO $fastcgi_path_info;
+    }
+
+Мы должны быть уверены, что этот сервис запущен до запуска веб-сервера. Для этого мы можем прописать очередь запуска в
+файле docker-compose:
+nginx:
+  depends_on:
+      -   php-fpm
+
+Осталось пересобрать наши образы и перезапустить проект:
+docker-compose down
+docker-compose build --pull
+docker-compose up -d
+
+---- сохранение в git ---- Установка PHP-FPM
