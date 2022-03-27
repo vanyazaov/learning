@@ -146,3 +146,26 @@ docker-compose build --pull
 docker-compose up -d
 
 ---- сохранение в git ---- Установка PHP-FPM
+---Упрощение запуска в терминале
+
+Чтобы не запускать постоянно эти длинные команды и не слидить за их последовательностью, можно использовать отдельную
+утилиту make и создать отдельный файл под названием Makefile.
+В нем можно прописать все команды в нужной последовательности объявив как отдельные команды, так и каскадные:
+init: docker-down-clear docker-pull docker-build-pull docker-up
+down: docker-down-clear
+
+docker-up:
+	docker-compose up -d
+
+docker-down-clear:
+	docker-compose down -v --remove-orphans
+
+docker-pull:
+	docker-compose pull
+
+docker-build-pull:
+	docker-compose build --pull
+
+Теперь мы можем выполнить короткую команду make init
+
+---- сохранение в git ---- Упрощение запуска в терминале
