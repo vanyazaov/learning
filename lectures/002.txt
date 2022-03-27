@@ -218,3 +218,42 @@ COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 docker-compose run --rm php-cli composer --version
 
 ---- сохранение в git ---- Установка Composer
+---Инициализация проекта
+
+Для создания конфигурационного файла выполним команду
+docker-compose run --rm php-cli composer init
+Он спросит как назвать проект, например так:
+vankazaov/demo-php-http-framework
+Далее спросит какое-нибудь описание
+Source code for our workshop
+Автора можно не указовать.
+Затем указать, что это проект.
+Далее указываем лицензию: BSD-3-Clause
+Укажем зависимость от php
+
+Витоге будут созданы файлы composer.json, composer.lock, .gitignore и папка vendor с установленными зависимостями.
+{
+    "name": "vankazaov/demo-php-http-framework",
+    "description": "Source code for our workshop",
+    "type": "project",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "deworker.pro"
+        }
+    ],
+    "require": {
+      "php": "^8.1"
+    }
+}
+
+Мы также можем дополнить файл Makefile:
+composer-install:
+  docker-compose run --rm php-cli composer install
+
+Также мы можем настроить в composer.json сортировку зависимостей:
+    "config": {
+      "sort-packages": true
+    }
+
+---- сохранение в git ---- Инициализация проекта
