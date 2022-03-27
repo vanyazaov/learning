@@ -208,3 +208,13 @@ RUN addgroup -g 1000 app && adduser -u 1000 -G app -s /bin/sh -D app
 USER app
 
 ---- сохранение в git ---- Переопределение пользователя
+---Установка Composer
+
+Установить composer можнодвумя способами либо написать команду для его установки либо скопировать из готового образа на
+docker-hub.
+Если хотим использовать второй вариант, то можем написать такую команду:
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
+После перебилда мы можем проверить наличие композера:
+docker-compose run --rm php-cli composer --version
+
+---- сохранение в git ---- Установка Composer
