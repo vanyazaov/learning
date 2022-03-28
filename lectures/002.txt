@@ -279,3 +279,23 @@ composer-install:
     }
 
 ---- сохранение в git ---- Структура исходного кода
+---Подключение PHPUnit
+
+docker-compose run --rm php-cli composer require --dev phpunit/phpunit
+Теперь запустить тесты можно через папку vendor:
+docker-compose run --rm php-cli ./vendor/bin/phpunit
+У нас ещё нет конфигурации и её мы можем автоматически создать запустив phpunit с соответствующим флагом:
+docker-compose run --rm php-cli ./vendor/bin/phpunit --generate-configuration
+1. Укажем, где храниться скрипт автозагрузки (по-умолчанию).
+2. Какую папку использовать для тестов (по-умолчанию).
+3. Какую папку использовать для исходников (по-умолчанию).
+4. Какую папку использовать для кеша. Здесь переопределим, создадим папку var, поместим в ней файл .gitignore/
+Укажем путь var/phpunit.cache
+В результате будет создан файл phpunit.xml.
+Изменим расположение схемы с внешнего ресурса на внутренний:
+xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+Также уберем секцию <coverage>
+
+Теперь мы можем запускать тесты: docker-compose run --rm php-cli ./vendor/bin/phpunit
+
+---- сохранение в git ---- Подключение PHPUnit
