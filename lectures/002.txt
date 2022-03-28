@@ -257,3 +257,25 @@ composer-install:
     }
 
 ---- сохранение в git ---- Инициализация проекта
+---Структура исходного кода, Автозагрузка классов проекта
+
+Наш код мы будем хранить в папке /src.
+Так как мы создаем фреймворк и демо-приложение на нем, то создадим две папки внутри: App и Framework.
+Теперь в файле composer.json необходимо настроить атозагрузку классов:
+    "autoload": {
+      "psr-4": {
+        "App\\": "src/App",
+        "Framework\\": "src/Framework"
+      }
+    }
+И выполнить команду docker-compose run --rm php-cli composer dump-autoload
+Также можем создать папку tests и внутри такие же папки App и Framework.
+Для тестов нужно будет прописать в composer.json секцию autoload-dev:
+    "autoload-dev": {
+      "psr-4": {
+        "Test\\App\\": "tests/App",
+        "Test\\Framework\\": "tests/Framework"
+      }
+    }
+
+---- сохранение в git ---- Структура исходного кода
