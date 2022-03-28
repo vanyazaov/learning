@@ -299,3 +299,29 @@ xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
 Теперь мы можем запускать тесты: docker-compose run --rm php-cli ./vendor/bin/phpunit
 
 ---- сохранение в git ---- Подключение PHPUnit
+---Подключение автозагрузчика, Пробный класс и тест
+
+Для этого в нашем индексном файле нужно прописать:
+require __DIR__ . '../vendor/autoload.php';
+
+Чтобы проверить автозагрузку и тесты создадим пробный класс и тест Example.
+После запуска теста мы увидим, что тест пометился как R з-за того, что у нас используются настройки покрытия тестов.
+Их необходимо удалить из конфигурации и запустить тест ещё раз.
+         -- forceCoversAnnotation="true"
+         -- beStrictAboutCoversAnnotation="true"
+Длязапуска тестов в цветном режиме, необходимо передать соответствующий параметр:
+docker-compose run --rm php-cli ./vendor/bin/phpunit --colors=always
+Чтобы каждый раз не писать длинную команду, мы можем её упростить.
+Для этого в файле composer.json создадим секцию scripts и пропишем эту команду там:
+    "scripts": {
+      "test": "phpunit --colors=always"
+    }
+Теперь мы можем запускать тесты через composer:
+docker-compose run --rm php-cli composer test
+
+Теперь эту команду мы можем поместить в наш Makefile:
+test:
+  docker-compose run --rm php-cli composer test
+и запускать теперь так: make test
+
+---- сохранение в git ---- Подключение автозагрузчика, Пробный класс и тест
