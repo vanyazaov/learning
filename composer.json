@@ -1,0 +1,25 @@
+{
+    "name": "vankazaov/ip2geo-locator",
+    "description": "A training example of writing code for determining Geo-data by IP from deworker.pro.",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Vankazaov\\Ip2geoLocator\\": "src/"
+        }
+    },
+    "autoload-dev": {
+      "psr-4": {
+        "Test\\Vankazaov\\Ip2geoLocator\\": "tests/"
+      }
+    },
+    "require": {
+      "php": "^8.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "scripts": {
+      "test": "phpunit --colors=always"
+    }
+}
