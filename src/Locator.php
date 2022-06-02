@@ -24,5 +24,14 @@ class Locator
         ]);
 
         $response = file_get_contents($url);
+        $data = json_decode($response, true);
+
+        $data = array_map(fn($value) => $value !== '-' ? $value : null, $data);
+
+        if (empty($data['country_name'])) {
+            return null;
+        }
+
+        return new Location($data['country_name'], $data['state_prov'], $data['city']);
     }
 }
