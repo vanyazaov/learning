@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Test\Vankazaov\Ip2geoLocator;
 
-use http\Exception\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use Vankazaov\Ip2geoLocator\Locator;
 
 class LocatorTest extends TestCase
 {
@@ -32,7 +32,7 @@ class LocatorTest extends TestCase
     {
         $locator = new Locator();
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $location = $locator->locate('invalid');
     }
 
@@ -40,7 +40,7 @@ class LocatorTest extends TestCase
     {
         $locator = new Locator();
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $location = $locator->locate('');
     }
 
