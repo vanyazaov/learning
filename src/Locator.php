@@ -7,6 +7,13 @@ namespace Vankazaov\Ip2geoLocator;
 
 class Locator
 {
+    private $client;
+
+    public function __construct(HttpClient $client)
+    {
+        $this->client = $client;
+    }
+
     public function locate(Ip $ip): ?Location
     {
         $url = 'https://api.ipgeolocation.io/ipgeo?' . http_build_query([
@@ -14,10 +21,7 @@ class Locator
                 'ip' => $ip->getValue()
         ]);
 
-        $response = @file_get_contents($url);
-        if ($response === false) {
-            throw new \RuntimeException(error_get_last()['message']);
-        }
+        $response = $this->client->get($url);
         $data = json_decode($response, true);
 
         $data = array_map(fn($value) => $value !== '-' ? $value : null, $data);
