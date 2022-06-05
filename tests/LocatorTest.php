@@ -17,15 +17,15 @@ class LocatorTest extends TestCase
 
         self::assertNotNull($location);
         self::assertEquals('United States', $location->getCountry());
-        self::assertEquals('California', $location->getRegion());
-        self::assertEquals('Mountain View', $location->getCity());
+        self::assertEquals('Louisiana', $location->getRegion());
+        self::assertEquals('Monroe', $location->getCity());
     }
 
     public function testNotFound(): void
     {
         $locator = new Locator();
+        $this->expectException(\RuntimeException::class);
         $location = $locator->locate(new Ip('127.0.0.1'));
-
         self::assertNull($location);
     }
 }
