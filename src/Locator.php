@@ -24,6 +24,8 @@ class Locator
         $response = $this->client->get($url);
         $data = json_decode($response, true);
 
+        if (empty($data)) return null;
+
         $data = array_map(fn($value) => $value !== '-' ? $value : null, $data);
 
         if (empty($data['country_name'])) {
