@@ -8,16 +8,18 @@ namespace Vankazaov\Ip2geoLocator;
 class Locator
 {
     private $client;
+    private $apiKey;
 
-    public function __construct(HttpClient $client)
+    public function __construct(HttpClient $client, string $apiKey)
     {
         $this->client = $client;
+        $this->apiKey = $apiKey;
     }
 
     public function locate(Ip $ip): ?Location
     {
         $url = 'https://api.ipgeolocation.io/ipgeo?' . http_build_query([
-                'apiKey' => 'b72326c0a81b487f85804eb84f433b8a',
+                'apiKey' => $this->apiKey,
                 'ip' => $ip->getValue()
         ]);
 

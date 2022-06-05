@@ -21,7 +21,7 @@ class LocatorTest extends TestCase
             'city' => 'Monroe'
         ]));
 
-        $locator = new Locator($client);
+        $locator = new Locator($client, 'b72326c0a81b487f85804eb84f433b8a');
         $location = $locator->locate(new Ip('8.8.8.8'));
 
         self::assertNotNull($location);
@@ -39,7 +39,7 @@ class LocatorTest extends TestCase
             'city' => '-'
         ]));
 
-        $locator = new Locator($client);
+        $locator = new Locator($client, 'b72326c0a81b487f85804eb84f433b8a');
         $location = $locator->locate(new Ip('127.0.0.1'));
         self::assertNull($location);
     }
